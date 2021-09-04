@@ -70,18 +70,33 @@ class IceFireController extends Controller
 
                 curl_close($allBooks);
 
+                $json = json_decode($response,true);
                 // echo $response;
-            if($response != null){
+                
+            if($response != '[]') {
+
+                $data = [
+                    'name' => $json[0]['name'],
+                    'isbn' => $json[0]['isbn'],
+                    'authors' => $json[0]['authors'],
+                    'number_of_pages' => $json[0]['numberOfPages'],
+                    'publisher' => $json[0]['publisher'],
+                    'country' => $json[0]['country'],
+                    'release_date' => $json[0]['released'],
+                ];
+
                 return response()->json([
                     'status_code' => 200,
                     'success' => true,
-                    'data' => json_decode($response,true)
+                    'data' => $data
                 ]);
-            }else{
+
+            } else{
+                $data = [];
                 return response()->json([
                     'status_code' => 200,
                     'success' => true,
-                    'data' => []
+                    'data' => $data
                 ]);
         }
     }
